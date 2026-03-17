@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Fake News Detection System</title>
+
+<style>
+
+body{
+font-family: Arial;
+background:#3b495d;
+text-align:center;
+padding-top:50px;
+margin:0;
+}
+
+.container{
+width:650px;
+margin:auto;
+background:rgb(191, 194, 234);
+padding:30px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.3);
+}
+
+h1{
+margin-bottom:20px;
+}
+
+textarea{
+width:100%;
+padding:10px;
+font-size:16px;
+border-radius:5px;
+border:1px solid #ccc;
+}
+
+button{
+background:#007bff;
+color:white;
+border:none;
+padding:12px 25px;
+font-size:16px;
+cursor:pointer;
+border-radius:5px;
+}
+
+button:hover{
+background:#0056b3;
+}
+
+.real{
+color:green;
+font-weight:bold;
+}
+
+.fake{
+color:red;
+font-weight:bold;
+}
+
+.bar{
+height:20px;
+background:#ddd;
+border-radius:10px;
+overflow:hidden;
+margin-top:10px;
+}
+
+.fill{
+height:100%;
+background:green;
+}
+
+.article-box{
+margin-top:25px;
+text-align:left;
+}
+
+.article{
+background:white;
+padding:10px;
+margin-top:10px;
+border-radius:5px;
+}
+
+a{
+text-decoration:none;
+color:#007bff;
+}
+
+a:hover{
+text-decoration:underline;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Fake News Detection System</h1>
+
+<form method="POST" action="/predict">
+
+<textarea name="news" rows="6"
+placeholder="Paste news text here..." required></textarea>
+
+<br><br>
+
+<button type="submit">Verify News</button>
+
+</form>
+
+
+{% if prediction %}
+
+<hr>
+
+<h2 class="{% if prediction == 'REAL NEWS' %}real{% else %}fake{% endif %}">
+Result: {{ prediction }}
+</h2>
+
+<p><b>Real Probability:</b> {{ real_prob }}%</p>
+<p><b>Fake Probability:</b> {{ fake_prob }}%</p>
+
+<div class="bar">
+<div class="fill" style="width: {{ real_prob }}%"></div>
+</div>
+
+{% endif %}
+
+
+{% if verified %}
+
+<div class="article-box">
+
+<h3>Verified News Sources</h3>
+
+{% for article in articles %}
+
+<div class="article">
+
+<b>{{ article.title }}</b>
+
+<br>
+
+Source: {{ article.source.name }}
+
+<br>
+
+<a href="{{ article.url }}" target="_blank">
+Read Full Article
+</a>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endif %}
+
+</div>
+
+</body>
+
+</html>
